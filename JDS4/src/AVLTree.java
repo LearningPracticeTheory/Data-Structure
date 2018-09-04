@@ -94,13 +94,13 @@ public class AVLTree<AnyType extends Comparable<AnyType>> {
 			if(height(t.left.right) <= height(t.left.left)) {
 				return rotateWithLeftChild(t);
 			} else {
-				return doubleWithLeftChild(t);
+				return doubleRotateWithLeftChild(t);
 			}
 		} else if(height(t.right) - height(t.left) > ALLOWED_IMBALANCE) {
 			if(height(t.right.left) <= height(t.right.right)) {
 				return rotateWithRightChild(t);
 			} else { //B.height > C.height
-				return doubleWithRightChild(t);
+				return doubleRotateWithRightChild(t);
 			}
 		}
 		t.height = Math.max(height(t.left), height(t.right)) + 1;
@@ -125,7 +125,7 @@ public class AVLTree<AnyType extends Comparable<AnyType>> {
 		t2.height = Math.max(height(t2.left), height(t2.right));
 		return t2;
 	}
-	
+/*	
 	private TreeNode doubleWithRightChild(TreeNode t1) {
 		t1.right = rotateWithLeftChild(t1.right);
 		return rotateWithRightChild(t1);
@@ -134,6 +134,34 @@ public class AVLTree<AnyType extends Comparable<AnyType>> {
 	private TreeNode doubleWithLeftChild(TreeNode t1) {
 		t1.left = rotateWithRightChild(t1.left);
 		return rotateWithLeftChild(t1);
+	}
+*/	
+	
+/*replace double single rotate*/
+	private TreeNode doubleRotateWithLeftChild(TreeNode A) {
+		TreeNode B = A.left;
+		TreeNode C = B.right;
+		B.right = C.left;
+		A.left = C.right;
+		C.left = B;
+		C.right = A;
+		B.height = Math.max(height(B.left), height(B.right));
+		A.height = Math.max(height(A.left), height(A.right));
+		C.height = Math.max(height(C.left), height(C.right));
+		return C;
+	}
+	
+	private TreeNode doubleRotateWithRightChild(TreeNode A) {
+		TreeNode B = A.right;
+		TreeNode C = B.left;
+		B.left = C.right;
+		A.right = C.left;
+		C.right = B;
+		C.left = A;
+		B.height = Math.max(height(B.left), height(B.right));
+		A.height = Math.max(height(A.left), height(A.right));
+		C.height = Math.max(height(C.left), height(C.right));
+		return C;
 	}
 
 	private int height(TreeNode t) {
