@@ -3,6 +3,7 @@ import java.nio.BufferUnderflowException;
 public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 
 	private TreeNode root = null;
+	private TreeNode leafRoot = null;
 	
 	public boolean isEmpty() {
 		return root == null;
@@ -17,7 +18,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 		root = this.insert(x, root); //update root for every time, especially initialized the root
 	}								 
 	
-	private TreeNode insert(AnyType x, TreeNode t) {
+	public TreeNode insert(AnyType x, TreeNode t) {
 		if(t == null) {
 			return new TreeNode(x);
 		}
@@ -150,6 +151,26 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 		}
 	}
 	
+	public void leafTraversal() { //findLeaves First
+		if(leafRoot != null) {
+			this.inorderTraversal(leafRoot);
+		} else {
+			System.out.println("find leaves first");
+		}
+	}
+	
+	public void findLeaves() {
+		this.findLeaves(root);
+	}
+	
+	private void findLeaves(TreeNode t) {
+		if(t.left != null) findLeaves(t.left);
+		if(t.left == null && t.right == null) {
+			leafRoot = insert(t.data, leafRoot);
+		}
+		if(t.right != null) findLeaves(t.right);
+	}
+	
 	public void preorderTraversal() {
 		this.preorderTraversal(root);
 		System.out.println();
@@ -166,7 +187,7 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 		System.out.println();
 	}
 	
-	private void inorderTraversal(TreeNode t) {
+	public void inorderTraversal(TreeNode t) {
 		if(t.left != null) inorderTraversal(t.left);
 		System.out.print(t.data + " ");
 		if(t.right != null) inorderTraversal(t.right);
@@ -183,13 +204,17 @@ public class BinarySearchTree<AnyType extends Comparable<? super AnyType>> {
 		System.out.print(t.data + " ");
 	}
 	
-	private class TreeNode {
+	public class TreeNode {
 		 AnyType data;
 		 TreeNode left;
 		 TreeNode right;
 		 TreeNode(AnyType data) {
 			 this.data = data;
 		 }
+	}
+
+	public TreeNode getRoot() {
+		return root;
 	}
 	
 }

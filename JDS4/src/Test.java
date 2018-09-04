@@ -21,7 +21,58 @@ public class Test {
 //		avlTreeTest();
 //		treeSetTest();
 //		multipleMappingsTest();
-		multipleMappingsPlusTest();
+//		multipleMappingsPlusTest();
+//		threadBinaryTreeTest();
+//		findLeaves();
+		treeGUITest();
+	}
+	
+	BinarySearchTree<Integer>.TreeNode leafRoot = null;
+	BinarySearchTree<Integer> tree = new BinarySearchTree<>();
+	
+	public void treeGUITest() {
+		treeInitialized(tree);
+		new TreeGUI<>(tree.getRoot());
+	}
+	
+	public void findLeaves() {
+//外部实现		
+		treeInitialized(tree);
+		traversalTree(tree.getRoot());
+		tree.inorderTraversal(leafRoot);
+		System.out.println();
+//内部实现 support this
+		tree.findLeaves();
+		tree.leafTraversal();
+	}
+	
+	private void traversalTree(BinarySearchTree<Integer>.TreeNode t) {
+		if(t.left != null) traversalTree(t.left);
+		if(t.left == null && t.right == null) {
+			leafRoot = tree.insert(t.data, leafRoot);
+		}
+		if(t.right != null) traversalTree(t.right);
+	}
+	
+	private void treeInitialized(BinarySearchTree<Integer> tree) {
+		tree.insert(6);
+		tree.insert(4);
+		tree.insert(8);
+		tree.insert(2);
+		tree.insert(5);
+		tree.insert(7);
+		tree.insert(9);
+		tree.insert(1);
+		tree.insert(3);
+	}
+	
+	public void threadBinaryTreeTest() {
+		String array[] = {"A", "B", "C", "D", "E", "F", "G"};
+		ThreadBinaryTree<String> tree = new ThreadBinaryTree<>();
+		tree.createThreadTree(array);
+		tree.inOrderThreadTree();
+		tree.inOrderTraversalBySuccessor();
+		tree.inOrderTraversalByPrecursor();
 	}
 	
 	public void multipleMappingsPlusTest() {
@@ -174,13 +225,15 @@ public class Test {
 		tree.inorderTraversal();
 		tree.remove(8); //case 4
 		tree.inorderTraversal();
+		tree.clear();
 /*traversal test*/
-		tree.insert(6);
 		tree.insert(4);
+		tree.insert(2);
+		tree.insert(6);
+		tree.insert(1);
 		tree.insert(3);
 		tree.insert(5);
-		tree.insert(2);
-		tree.insert(1);
+		tree.insert(7);
 		tree.preorderTraversal();
 		tree.inorderTraversal();
 		tree.postorderTraversal();
