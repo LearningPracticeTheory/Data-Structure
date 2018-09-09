@@ -1,3 +1,4 @@
+import java.util.Iterator;
 
 public class Test {
 
@@ -6,9 +7,103 @@ public class Test {
 	}
 	
 	public void execute() {
+//		hashSetTest();
+		hashMapTest();
+	}
+	
+	/*
+	public final class String { //final class which cannot be extends 
+		
+		private int hashVal = 0;
+		
+		@Override
+		public int hashCode() {
+			if(hashVal != 0) { //Caching the hash code
+				return hashVal; 
+			} 
+			for(int i = 0; i < length(); i++) {
+				hashVal *= 31 + (int) charAt(i);
+			}
+			return hashVal;
+		}
 		
 	}
+	*/
+	
+	public void hashMapTest() {
+//		HashMap<Integer, String> hm = new HashMap<>();
+		MyHashMap<Integer, String> hm = new MyHashMap<>();
+		hm.put(1, "one");
+		hm.put(3, "one"); //keys -> value
+		hm.put(2, "two");
+		hm.put(1, "1"); //Cover
+		System.out.println(hm); //toString
+		System.out.println(hm.containsKey(1));
+		System.out.println(hm.containsValue("one"));
+		System.out.println(hm.put(3, "three")); //return old Value, which cover by the new one
+		System.out.println(hm.get(3)); //get key return value
+		System.out.println(hm.keySet()); //return all Keys, return Set<>
+		System.out.println(hm.values()); //return values
+		System.out.println(hm.remove(3)); //remove key return value
+		System.out.println("size=" + hm.size()); 
+		System.out.println(hm.replace(2, "2")); //replace by new Value, return old one
+		hm.clear();
+		System.out.println(hm); //{} == NULL
+		System.out.println(hm.isEmpty());
+		
+//		HashMap<List<Integer>, List<String>> hashMap = new HashMap<>(); //K, V same
+		hm.put(1, "one");
+		hm.put(2, "two");
+		hm.put(3, "three");
+		System.out.println(hm);
+		System.out.println(hm.remove(3));
+		System.out.println(hm);
+		System.out.println(hm.remove(10));
+		System.out.println(hm.remove(2));
+		System.out.println(hm.remove(1));
+		System.out.println(hm);
+	}
 
+	public void hashSetTest() { //add contains remove toArray toString
+//		HashSet<Integer> hs = new HashSet<>();
+		MyHashSet<Integer> hs = new MyHashSet<>();
+		hs.add(1);
+		hs.add(2);
+		hs.add(3);
+		hs.add(10);
+		hs.add(4); //sort?? toArray -> Arrays.sort() -> iterator
+		hs.add(4); //No repeat
+		Iterator<Integer> it = hs.iterator();
+		while(it.hasNext()) {
+			System.out.print(it.next() + " ");
+		}
+		System.out.println();
+		Object array[] = hs.toArray(); //sorted
+		
+		for(Object i : array) {
+			System.out.print(i + " ");
+		}
+		System.out.println();
+		
+		System.out.println(hs); //toString()
+		
+		System.out.println(hs.remove(1));
+		System.out.println(hs.add(1));
+		System.out.println(hs);
+		
+		hs.remove(1);		
+		hs.remove(2);
+		
+		
+		hs.remove(3);
+		hs.remove(4);
+		System.out.println(hs);
+		System.out.println("size=" + hs.size());
+
+		hs.clear();
+		
+		System.out.println(hs);
+	}
 	
 /*ASCII add all*/
 	public static int hash1(String key, int tableSize) {

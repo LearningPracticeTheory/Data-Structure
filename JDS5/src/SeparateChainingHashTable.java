@@ -1,11 +1,15 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Iterator;
 
 public class SeparateChainingHashTable<AnyType> {
 
 	private static final int DEFAULT_TABLE_SIZE = 101;
 	private static int size = 0;
 	private List<AnyType> lists[] = null;
+	private AnyType array[] = null;
 	
 	SeparateChainingHashTable() {
 		this(DEFAULT_TABLE_SIZE);
@@ -101,12 +105,70 @@ public class SeparateChainingHashTable<AnyType> {
 		return false;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public AnyType[] toArray() {
+//		AnyType array[] = new AnyType[size]; //cannot create an AnyType array
+		List<AnyType> array = new LinkedList<>();
+		for(int i = 0; i < lists.length; i++) {
+			for(AnyType item : lists[i]) {
+				if(item != null) {
+					array.add(item);
+				}
+			}
+		}
+		Arrays.sort(array.toArray());
+		return (AnyType[])array.toArray();
+	}
+	
 	public void makeEmpty() {
 		for(int i = 0; i < lists.length; i++) {
 //			lists[i]  = null;
 			lists[i].clear(); //not NULL;
 		}
 		size = 0;
+	}
+	
+	public int size() {
+		return size;
+	}
+	
+	@Override
+	public String toString() {
+		array = toArray();
+		String s = "[";
+		for(int i = 0; i < array.length; i++) {
+			if(i == array.length-1) {
+				s += array[i];
+			} else {
+				s += array[i] + ", ";
+			}
+		}
+		s += "]";
+		return s;
+	}
+	
+	public Iterator<AnyType> iterator() {
+		array = toArray(); //sorted
+		return new MyIterator();
+	}
+	
+	private class MyIterator implements Iterator<AnyType> {
+
+		private int index = 0;
+		
+		@Override
+		public boolean hasNext() {
+			return index < array.length;
+		}
+
+		@Override
+		public AnyType next() {
+			if(!hasNext()) {
+				throw new NoSuchElementException();
+			}
+			return array[index++];
+		}
+		
 	}
 	
 }
