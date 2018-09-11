@@ -8,7 +8,32 @@ public class Test {
 	
 	public void execute() {
 //		hashSetTest();
-		hashMapTest();
+//		hashMapTest();
+//		cuckooHashTableTest();
+//		priorityTest();
+	}
+	
+	public void priorityTest() {
+		int num = 0;
+		for(int i = 0; i < 5; i++) {
+			num *= 2 + 1; //multiple then assignment, NO add!
+			System.out.print(num + " ");
+		}
+	}
+	
+/*测试应该将插入移除过程中值得踢出&替换显示较为合适*/
+	public void cuckooHashTableTest() {
+		CuckooHashTable<String> cht = new CuckooHashTable<>(new StringHashFamily(3));
+		System.out.println(cht.insert("A"));
+		System.out.println(cht.insert("B"));
+		System.out.println(cht.insert("C"));
+		System.out.println(cht.insert("D"));
+		System.out.println(cht.insert("A"));
+		System.out.println(cht.contains("A"));
+		System.out.println(cht.remove("A"));
+		System.out.println(cht.contains("A"));
+		cht.clear();
+		System.out.println(cht.contains("D"));
 	}
 	
 	/*
@@ -22,7 +47,8 @@ public class Test {
 				return hashVal; 
 			} 
 			for(int i = 0; i < length(); i++) {
-				hashVal *= 31 + (int) charAt(i);
+//				hashVal *= 31 + (int) charAt(i); //error
+				hashVal = 31*hashVal + (int) charAt(i);
 			}
 			return hashVal;
 		}
@@ -124,7 +150,8 @@ public class Test {
 	public static int hash3(String key, int tableSize) {
 		int hashVal = 0;
 		for(int i = 0; i < key.length(); i++) {
-			hashVal *= 37 + key.charAt(i);
+//			hashVal *= 37 + key.charAt(i); //error
+			hashVal = 31*hashVal + (int) key.charAt(i);
 		}
 		hashVal %= tableSize;
 		if(hashVal < 0) {
