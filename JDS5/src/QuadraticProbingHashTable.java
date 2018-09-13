@@ -3,6 +3,7 @@ public class QuadraticProbingHashTable<AnyType> {
 
 	private static final int DEFAULT_TABLE_SIZE = 11;
 	private static int size = 0;
+	private static int collisionCount = 0;
 	private HashEntry<AnyType> entrys[] = null;
 	
 	QuadraticProbingHashTable() {
@@ -31,7 +32,8 @@ public class QuadraticProbingHashTable<AnyType> {
 		while(entrys[index] != null && !entrys[index].data.equals(x)) {
 			index += offSet;
 			offSet += 2;
-			if(index > entrys.length) {
+			collisionCount++;
+			if(index >= entrys.length) { //must >= !!! debug
 				index -= entrys.length; //pull back to the range of array
 			}
 		}
@@ -39,17 +41,11 @@ public class QuadraticProbingHashTable<AnyType> {
 	}
 	
 	private boolean isActive(int currentPos) {
-		/*
-		if(entrys[currentPos] == null) {
-			return false;
-		}
-		return entrys[currentPos].isActive;
-		*/
 		return entrys[currentPos] != null && entrys[currentPos].isActive;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void rehash() {
+	private void rehash() { //expand capacity
 		HashEntry<AnyType> oldEntrys[] = entrys;
 		entrys = new HashEntry[Prime.nextPrime(entrys.length*2)];
 		size = 0; //insert size++; new Entry with new size
@@ -88,6 +84,7 @@ public class QuadraticProbingHashTable<AnyType> {
 	
 	public void makeEmpty() {
 		size = 0;
+		collisionCount = 0;
 		for(int i = 0; i < entrys.length; i++) {
 			entrys[i] = null;
 		}
@@ -105,6 +102,10 @@ public class QuadraticProbingHashTable<AnyType> {
 			this.data = data;
 			this.isActive = isActive;
 		}
+	}
+
+	public int getCollisionCount() {
+		return collisionCount;
 	}
 	
 }

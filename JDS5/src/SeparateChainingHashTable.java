@@ -6,8 +6,9 @@ import java.util.Iterator;
 
 public class SeparateChainingHashTable<AnyType> {
 
-	private static final int DEFAULT_TABLE_SIZE = 101;
+	private static final int DEFAULT_TABLE_SIZE = 11;
 	private static int size = 0;
+	private static int collisionCount = 0; 
 	private List<AnyType> lists[] = null;
 	private AnyType array[] = null;
 	
@@ -74,6 +75,9 @@ public class SeparateChainingHashTable<AnyType> {
 			whichList = new LinkedList<>(); //cause use clear();
 		}
 		*/
+		if(!whichList.isEmpty()) {
+			collisionCount++;
+		}
 		whichList.add(x);
 		if(++size > lists.length) {
 			rehash();
@@ -83,21 +87,11 @@ public class SeparateChainingHashTable<AnyType> {
 	
 	public boolean contains(AnyType x) {
 		List<AnyType> whichList = lists[myHash(x)];
-		/*
-		if(whichList == null) {
-			return false;
-		}
-		*/
 		return whichList.contains(x);
 	}
 	
 	public boolean remove(AnyType x) {
 		List<AnyType> whichList = lists[myHash(x)];
-		/*
-		if(whichList == null) { 
-			return false;
-		}
-		*/
 		if(whichList.contains(x)) {
 			size--;
 			return whichList.remove(x);
@@ -126,6 +120,7 @@ public class SeparateChainingHashTable<AnyType> {
 			lists[i].clear(); //not NULL;
 		}
 		size = 0;
+		collisionCount = 0;
 	}
 	
 	public int size() {
@@ -169,6 +164,10 @@ public class SeparateChainingHashTable<AnyType> {
 			return array[index++];
 		}
 		
+	}
+
+	public int getCollisionCount() {
+		return collisionCount;
 	}
 	
 }

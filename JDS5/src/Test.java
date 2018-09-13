@@ -1,7 +1,10 @@
 import java.util.Iterator;
+import java.util.Random;
 
 public class Test {
 
+	Random r = new Random();
+	
 	public static void main(String args[]) {
 		new Test().execute();
 	}
@@ -11,7 +14,23 @@ public class Test {
 //		hashMapTest();
 //		cuckooHashTableTest();
 //		priorityTest();
-		bitOperationTest();
+//		bitOperationTest();
+		collisionCount();
+	}
+	
+	public void collisionCount() {
+		int array[] = new int[20];
+		SeparateChainingHashTable<Integer> scht = new SeparateChainingHashTable<>();
+		QuadraticProbingHashTable<Integer> qpht = new QuadraticProbingHashTable<>();
+		for(int i = 0; i < array.length; i++) {
+			array[i] = r.nextInt(array.length*2);
+			System.out.print(array[i] + " ");
+			scht.insert(array[i]);
+			qpht.insert(array[i]);
+		}
+		System.out.println("\nCollision Count:");
+		System.out.println("SeparateChainingHashTable:" + scht.getCollisionCount());
+		System.out.println("QuadraticProbingHashTable:" + qpht.getCollisionCount());
 	}
 	
 	public void bitOperationTest() {
