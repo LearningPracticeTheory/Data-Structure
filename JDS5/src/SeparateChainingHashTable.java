@@ -123,13 +123,10 @@ public class SeparateChainingHashTable<AnyType> {
 		}
 		size = 0;
 		collisionCount = 0;
-<<<<<<< HEAD
 	}
 	
 	public boolean isEmpty() {
 		return size == 0;
-=======
->>>>>>> 6e43e60f896cc2ee6f0dffa0181ce40509bef8e7
 	}
 	
 	public int size() {

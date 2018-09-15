@@ -15,7 +15,6 @@ public class Test {
 //		cuckooHashTableTest();
 //		priorityTest();
 //		bitOperationTest();
-<<<<<<< HEAD
 //		intpart();
 //		collisionCount();
 		patternStringTest();
@@ -49,9 +48,6 @@ System.out.print(strings[i] + "\t");
 		System.out.println("[10/3] = " + m/3); //3
 		m = -m;
 		System.out.println("[-10/3] = " + m/3); //-3
-=======
-		collisionCount();
->>>>>>> 6e43e60f896cc2ee6f0dffa0181ce40509bef8e7
 	}
 	
 	public void collisionCount() {
@@ -67,7 +63,6 @@ System.out.print(strings[i] + "\t");
 		System.out.println("\nCollision Count:");
 		System.out.println("SeparateChainingHashTable:" + scht.getCollisionCount());
 		System.out.println("QuadraticProbingHashTable:" + qpht.getCollisionCount());
-<<<<<<< HEAD
 		for(int i = 0; i < array.length; i++) { //reduce capacity test
 			scht.remove(array[i]);
 			qpht.remove(array[i]);
@@ -86,8 +81,6 @@ System.out.print(strings[i] + "\t");
 		for(int i = 0; i < array.length; i++) { 
 			System.out.print(scht.contains(array[i]) + " ");
 		}
-=======
->>>>>>> 6e43e60f896cc2ee6f0dffa0181ce40509bef8e7
 	}
 	
 	public void bitOperationTest() {

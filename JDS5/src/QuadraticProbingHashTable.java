@@ -32,12 +32,9 @@ public class QuadraticProbingHashTable<AnyType> {
 		while(entrys[index] != null && !entrys[index].data.equals(x)) {
 			index += offSet;
 			offSet += 2;
-<<<<<<< HEAD
 			if(offSet > size) { //offSet too bigger, index more than twice the size, pull back
 				offSet = 1;
 			}
-=======
->>>>>>> 6e43e60f896cc2ee6f0dffa0181ce40509bef8e7
 			collisionCount++;
 			if(index >= entrys.length) { //must >= !!! debug
 				index -= entrys.length; //pull back to the range of array
@@ -51,11 +48,7 @@ public class QuadraticProbingHashTable<AnyType> {
 	}
 	
 	@SuppressWarnings("unchecked")
-<<<<<<< HEAD
 	private void rehash(int capacity) { //expand capacity
-=======
-	private void rehash() { //expand capacity
->>>>>>> 6e43e60f896cc2ee6f0dffa0181ce40509bef8e7
 		HashEntry<AnyType> oldEntrys[] = entrys;
 		entrys = new HashEntry[Prime.nextPrime(capacity)];
 		size = 0; //insert size++; new Entry with new size
