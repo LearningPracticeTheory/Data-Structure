@@ -26,7 +26,7 @@ public class QuadraticProbingHashTable<AnyType> {
 		return hashVal;
 	}
 	
-	private int findPos(AnyType x) { //Finding the exactly position
+	public int findPos(AnyType x) { //Finding the exactly position
 		int offSet = 1; //1, 3, 5...
 		int index = myHash(x);
 		while(entrys[index] != null && !entrys[index].data.equals(x)) {
@@ -101,6 +101,10 @@ public class QuadraticProbingHashTable<AnyType> {
 	
 	public int size() {
 		return size;
+	}
+	
+	public int sizeOfHashEntry() {
+		return entrys.length;
 	}
 
 	private static class HashEntry<AnyType> { //like Node

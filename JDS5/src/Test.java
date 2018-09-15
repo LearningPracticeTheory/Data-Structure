@@ -17,9 +17,21 @@ public class Test {
 //		bitOperationTest();
 //		intpart();
 //		collisionCount();
-		patternStringTest();
+//		patternStringTest();
+		wordSpellingCheckTest();
 	}
 	
+	public void wordSpellingCheckTest() { //the size of table is too small, cause too few words
+		WordSpellingCheck wsc = new WordSpellingCheck();
+		String s = "solo";
+		System.out.print(wsc.findWord(s));
+		System.out.println(" line:" + wsc.findLineOfWord(s));
+		s = "zinc";
+		wsc.deleteOneChar(s);
+		wsc.switchAdjacentChars(s);
+		wsc.addOneCharAtAnyPlace(s);
+	}
+
 	public void patternStringTest() {
 		String str = "sdfdsTinyAtinyaTinyatinyATinyAlk";
 		String target = "TinyA";
