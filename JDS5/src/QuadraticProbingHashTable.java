@@ -3,6 +3,7 @@ public class QuadraticProbingHashTable<AnyType> {
 
 	private static final int DEFAULT_TABLE_SIZE = 11;
 	private static int size = 0;
+	private static int collisionCount = 0;
 	private HashEntry<AnyType> entrys[] = null;
 	
 	QuadraticProbingHashTable() {
@@ -31,7 +32,11 @@ public class QuadraticProbingHashTable<AnyType> {
 		while(entrys[index] != null && !entrys[index].data.equals(x)) {
 			index += offSet;
 			offSet += 2;
-			if(index > entrys.length) {
+			if(offSet > size) { //offSet too bigger, index more than twice the size, pull back
+				offSet = 1;
+			}
+			collisionCount++;
+			if(index >= entrys.length) { //must >= !!! debug
 				index -= entrys.length; //pull back to the range of array
 			}
 		}
@@ -39,19 +44,13 @@ public class QuadraticProbingHashTable<AnyType> {
 	}
 	
 	private boolean isActive(int currentPos) {
-		/*
-		if(entrys[currentPos] == null) {
-			return false;
-		}
-		return entrys[currentPos].isActive;
-		*/
 		return entrys[currentPos] != null && entrys[currentPos].isActive;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void rehash() {
+	private void rehash(int capacity) { //expand capacity
 		HashEntry<AnyType> oldEntrys[] = entrys;
-		entrys = new HashEntry[Prime.nextPrime(entrys.length*2)];
+		entrys = new HashEntry[Prime.nextPrime(capacity)];
 		size = 0; //insert size++; new Entry with new size
 		for(int i = 0; i < oldEntrys.length; i++) {
 			if(oldEntrys[i] != null && oldEntrys[i].isActive) {
@@ -67,7 +66,7 @@ public class QuadraticProbingHashTable<AnyType> {
 		}
 		entrys[index] = new HashEntry<>(x);
 		if(++size > entrys.length/2) {
-			rehash();
+			rehash(entrys.length*2);
 		}
 		return true;
 	}
@@ -80,7 +79,9 @@ public class QuadraticProbingHashTable<AnyType> {
 	public boolean remove(AnyType x) {
 		if(contains(x)) { //findPos + isActive
 			entrys[findPos(x)].isActive = false;
-			size--;
+			if(--size <= entrys.length/4) {
+				rehash(entrys.length/2);
+			}
 			return true;
 		}
 		return false;
@@ -88,9 +89,18 @@ public class QuadraticProbingHashTable<AnyType> {
 	
 	public void makeEmpty() {
 		size = 0;
+		collisionCount = 0;
 		for(int i = 0; i < entrys.length; i++) {
 			entrys[i] = null;
 		}
+	}
+	
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	public int size() {
+		return size;
 	}
 
 	private static class HashEntry<AnyType> { //like Node
@@ -105,6 +115,10 @@ public class QuadraticProbingHashTable<AnyType> {
 			this.data = data;
 			this.isActive = isActive;
 		}
+	}
+
+	public int getCollisionCount() {
+		return collisionCount;
 	}
 	
 }

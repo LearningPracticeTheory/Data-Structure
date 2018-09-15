@@ -6,8 +6,9 @@ import java.util.Iterator;
 
 public class SeparateChainingHashTable<AnyType> {
 
-	private static final int DEFAULT_TABLE_SIZE = 101;
+	private static final int DEFAULT_TABLE_SIZE = 11;
 	private static int size = 0;
+	private static int collisionCount = 0; 
 	private List<AnyType> lists[] = null;
 	private AnyType array[] = null;
 	
@@ -50,9 +51,9 @@ public class SeparateChainingHashTable<AnyType> {
 	*/
 /*Must reinsert*/
 	@SuppressWarnings("unchecked")
-	private void rehash() { //expand capacity
+	private void rehash(int capacity) { //ensure capacity == expand & reduce
 		List<AnyType> oldLists[] = lists;
-		lists = new LinkedList[Prime.nextPrime(lists.length*2)];
+		lists = new LinkedList[Prime.nextPrime(capacity)];
 		for(int i = 0; i < lists.length; i++) {
 			lists[i] = new LinkedList<>();
 		}
@@ -74,32 +75,27 @@ public class SeparateChainingHashTable<AnyType> {
 			whichList = new LinkedList<>(); //cause use clear();
 		}
 		*/
+		if(!whichList.isEmpty()) {
+			collisionCount++;
+		}
 		whichList.add(x);
 		if(++size > lists.length) {
-			rehash();
+			rehash(lists.length*2);
 		}
 		return true;
 	}
 	
 	public boolean contains(AnyType x) {
 		List<AnyType> whichList = lists[myHash(x)];
-		/*
-		if(whichList == null) {
-			return false;
-		}
-		*/
 		return whichList.contains(x);
 	}
 	
 	public boolean remove(AnyType x) {
 		List<AnyType> whichList = lists[myHash(x)];
-		/*
-		if(whichList == null) { 
-			return false;
-		}
-		*/
 		if(whichList.contains(x)) {
-			size--;
+			if(--size < lists.length/4) {
+				rehash(lists.length/2);
+			}
 			return whichList.remove(x);
 		}
 		return false;
@@ -126,6 +122,11 @@ public class SeparateChainingHashTable<AnyType> {
 			lists[i].clear(); //not NULL;
 		}
 		size = 0;
+		collisionCount = 0;
+	}
+	
+	public boolean isEmpty() {
+		return size == 0;
 	}
 	
 	public int size() {
@@ -169,6 +170,10 @@ public class SeparateChainingHashTable<AnyType> {
 			return array[index++];
 		}
 		
+	}
+
+	public int getCollisionCount() {
+		return collisionCount;
 	}
 	
 }

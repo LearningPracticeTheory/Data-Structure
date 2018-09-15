@@ -1,7 +1,10 @@
 import java.util.Iterator;
+import java.util.Random;
 
 public class Test {
 
+	Random r = new Random();
+	
 	public static void main(String args[]) {
 		new Test().execute();
 	}
@@ -11,7 +14,73 @@ public class Test {
 //		hashMapTest();
 //		cuckooHashTableTest();
 //		priorityTest();
-		bitOperationTest();
+//		bitOperationTest();
+//		intpart();
+//		collisionCount();
+		patternStringTest();
+	}
+	
+	public void patternStringTest() {
+		String str = "sdfdsTinyAtinyaTinyatinyATinyAlk";
+		String target = "TinyA";
+		System.out.println(str.indexOf(target));
+		PatternString ps = new PatternString(str);
+		System.out.println(ps.indexOf(target));
+		int size = str.length()-target.length()+1;
+		String strings[] = new String[size]; 
+		for(int i = 0; i < size; i++) {
+			strings[i] = str.substring(i, i+target.length()); //[i, i+length)
+System.out.print(strings[i] + "\t");
+		}
+		System.out.println();
+		for(int i = 0; i < size; i++) {
+			System.out.print(str.indexOf(strings[i]) + "\t");
+		}
+		System.out.println();
+		for(int i = 0; i < size; i++) {
+			System.out.print(ps.indexOf(strings[i]) + "\t");
+		}
+		
+	}
+	
+	public void intpart() {
+		int m = 10;
+		System.out.println("[10/3] = " + m/3); //3
+		m = -m;
+		System.out.println("[-10/3] = " + m/3); //-3
+	}
+	
+	public void collisionCount() {
+		int array[] = new int[20];
+		SeparateChainingHashTable<Integer> scht = new SeparateChainingHashTable<>();
+		QuadraticProbingHashTable<Integer> qpht = new QuadraticProbingHashTable<>();
+		for(int i = 0; i < array.length; i++) {
+			array[i] = r.nextInt(array.length*2);
+			System.out.print(array[i] + " ");
+			scht.insert(array[i]);
+			qpht.insert(array[i]);
+		}
+		System.out.println("\nCollision Count:");
+		System.out.println("SeparateChainingHashTable:" + scht.getCollisionCount());
+		System.out.println("QuadraticProbingHashTable:" + qpht.getCollisionCount());
+		for(int i = 0; i < array.length; i++) { //reduce capacity test
+			scht.remove(array[i]);
+			qpht.remove(array[i]);
+		}
+		for(int i = 0; i < array.length; i++) { //reinsert & expand capacity test
+			array[i] = r.nextInt(array.length*2);
+			scht.insert(array[i]);
+			qpht.insert(array[i]);
+		}
+		scht.remove(array[10]);
+		qpht.remove(array[10]);
+		for(int i = 0; i < array.length; i++) { 
+			System.out.print(scht.contains(array[i]) + " ");
+		}
+		System.out.println();
+		for(int i = 0; i < array.length; i++) { 
+			System.out.print(scht.contains(array[i]) + " ");
+		}
 	}
 	
 	public void bitOperationTest() {
