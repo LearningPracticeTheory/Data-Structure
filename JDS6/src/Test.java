@@ -1,3 +1,4 @@
+import java.util.PriorityQueue;
 import java.util.Random;
 
 public class Test {
@@ -11,7 +12,71 @@ public class Test {
 	
 	public void launch() {
 //		binaryHeapTest();
-		leftistHeapTest();
+//		leftistHeapTest();
+		binomialQueueTest();
+//		priorityQueueTest();
+	}
+	
+	/*
+	 * The priority queue of java standard library
+	 */
+	public void priorityQueueTest() { //sort
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
+		System.out.print(pq.add(1) + " ");
+		System.out.print(pq.add(3) + " ");
+		System.out.println(pq.add(2));
+		System.out.println(pq.contains(1));
+		System.out.println(pq.remove());
+		System.out.println(pq.peek());
+		System.out.println(pq.poll());
+		System.out.println(pq.size());
+		pq.clear();
+		System.out.println(pq.isEmpty());
+	}
+	
+	public void binomialQueueTest() {
+		BinomialQueue<Integer> bq = new BinomialQueue<>();
+					//case:
+		bq.insert(7); // 2
+		bq.insert(6); // 3 -> 4 /*expandTrees(2)*/ 
+		bq.insert(5); // 2 -> 1
+		bq.insert(4); // 3 -> 5 -> 4 /*expandTrees(3)*/
+		bq.insert(3); // 2 -> 0 -> 1
+		bq.insert(2); // 3 -> 4 -> 1
+		bq.insert(1); // 2 -> 1 -> 1
+		/*
+		 * sort from small -> large
+		 */
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.print(bq.deleteMin() + " ");
+		System.out.println(bq.isEmpty());
+//		System.out.println(bq.deleteMin()); //Exception test
+		
+		for(int i = 0; i < 10; i++) {
+			bq.insert(r.nextInt(20));
+		}
+		for(int i = 0; i < 10; i++) {
+			System.out.print(bq.deleteMin() + " ");
+		}
+		
+		bq.clear();
+		System.out.println(bq.isEmpty());
+		
+		bq.insert(7);
+		bq.insert(6);
+		bq.insert(5);
+		bq.insert(1);
+		bq.insert(4);
+		bq.insert(3);
+		bq.insert(2);
+		
+		System.out.println(bq.deleteMin());
+		
 	}
 	
 	public void leftistHeapTest() {
