@@ -13,10 +13,27 @@ public class Test {
 	public void launch() {
 //		binaryHeapTest();
 //		leftistHeapTest();
-		binomialQueueTest();
+//		binomialQueueTest();
 //		priorityQueueTest();
+		binaryHeapFindLeavesTest();
 	}
 	
+	private void binaryHeapFindLeavesTest() {
+		BinaryHeap<Integer> bh = new BinaryHeap<>();
+//		Integer leaves[] = null; //Comparable --X--> Integer
+		Comparable<Integer> leaves[] = null;
+		for(int i = 1; i <= 10; i++) {
+			bh.insert(i);
+			leaves = bh.findLeaves();
+			for(Comparable<Integer> leaf : leaves) {
+				System.out.print(leaf + " ");
+			}
+			System.out.println();
+		}
+		bh.clear();
+		System.out.println(bh.findLeaves());
+	}
+
 	/*
 	 * The priority queue of java standard library
 	 */

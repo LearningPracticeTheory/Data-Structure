@@ -41,6 +41,23 @@ public class BinaryHeap<AnyType extends Comparable<AnyType>> {
 		buildHeap();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public AnyType[] findLeaves() {
+		if(isEmpty()) {
+			return null;
+		} //the number of leaves == [size/2] == minimum Integer which greater than size/2;
+		int theNumLeaves = size % 2 == 0 ? size/2 : (size+1)/2; //even : odd number
+//		AnyType leaves[] = (AnyType[]) new Object[theNumLeaves]; //Object --X--> Comparable
+		AnyType leaves[] = (AnyType[]) new Comparable[theNumLeaves]; //Comparable --X--> Integer
+		int leaveIndex = 0;
+		for(int index = 1; index <= size; index++) {
+			if(index * 2 > size) {
+				leaves[leaveIndex++] = array[index];
+			}
+		}
+		return leaves;
+	}
+	
 	public void insert(AnyType x) { //array[0] as sentry, which like a tmpElement
 		if(size == array.length-1) {
 			ensureCapacity(array.length*2+1);
@@ -132,12 +149,9 @@ public class BinaryHeap<AnyType extends Comparable<AnyType>> {
 	@SuppressWarnings("unchecked")
 	private void ensureCapacity(int capacity) {
 		AnyType tmpArray[] = array;
-		array = (AnyType[]) new Object[capacity];
-		int index = 0;
-		for(int i = 0; i < tmpArray.length; i++) {
-			if(tmpArray[i] != null) {
-				array[++index] = tmpArray[i];
-			}
+		array = (AnyType[]) new Comparable[capacity];
+		for(int i = 0; i <= size; i++) {
+			array[i] = tmpArray[i];
 		}
 	}
 	
