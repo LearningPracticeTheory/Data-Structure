@@ -15,10 +15,95 @@ public class Test {
 //		leftistHeapTest();
 //		binomialQueueTest();
 //		priorityQueueTest();
-		binaryHeapFindLeavesTest();
+//		binaryHeapFindLeavesTest();
+		binaryHeapChainTest();
 	}
 	
-	private void binaryHeapFindLeavesTest() {
+	
+	public void binaryHeapChainTest() {
+		BinaryHeapChain<Integer> heap = new BinaryHeapChain<>();
+		
+		heap.insert(2);
+		heap.insert(1);
+		heap.insert(3);
+		heap.insert(4);
+		heap.insert(0);
+		heap.insert(2);
+		
+		System.out.print(heap.deleteMin() + " ");
+		System.out.print(heap.deleteMin() + " ");
+		System.out.print(heap.deleteMin() + " ");
+		System.out.print(heap.deleteMin() + " ");
+		System.out.print(heap.deleteMin() + " ");
+		System.out.println(heap.deleteMin());
+		
+		for(int i = 0; i < 10; i++) {
+			heap.insert(10 + r.nextInt(30));
+		}
+		
+		for(int i = 0; i < 10; i++) { //levelOrderTraversal
+			System.out.print(heap.findIndexElement(i+1) + " ");
+		}
+		
+		System.out.println();
+		
+		for(int i = 0; i < 10; i++) {
+			System.out.print(heap.deleteMin() + " ");
+		}
+
+		heap.clear();
+		System.out.println();
+		
+/*
+ * mergeTest		
+ */		
+		heap.insert(2);
+		heap.insert(1);
+		heap.insert(8);
+		heap.insert(6);
+		heap.insert(0);
+		
+		System.out.print("heap1: ");
+		for(int i = 0; i < heap.size(); i++) { //levelOrderTraversal
+			System.out.print(heap.findIndexElement(i+1) + " ");
+		}
+		System.out.println();
+		
+		BinaryHeapChain<Integer> heap2 = new BinaryHeapChain<>();
+		
+		for(int i = 0; i < 3 + r.nextInt(8); i++) {
+			heap2.insert(r.nextInt(3) + r.nextInt(15));
+		}
+		
+		System.out.print("heap2: ");
+		for(int i = 0; i < heap2.size(); i++) { //levelOrderTraversal
+			System.out.print(heap2.findIndexElement(i+1) + " ");
+		}
+		System.out.println();
+		
+		heap.merge(heap2);
+		System.out.print("1 merge 2: ");
+		for(int i = 0; i < heap.size(); i++) { //levelOrderTraversal
+			System.out.print(heap.findIndexElement(i+1) + " ");
+		}
+		System.out.println(" heap2 == null ? " + heap2.isEmpty());
+		
+		heap2.merge(heap);
+		System.out.print("2 merge 1: ");
+		for(int i = 0; i < heap2.size(); i++) { //levelOrderTraversal
+			System.out.print(heap2.findIndexElement(i+1) + " ");
+		}
+		System.out.println(" heap1 == null ? " + heap.isEmpty());
+		
+		System.out.print("sort:      ");
+		int heapSize = heap2.size();
+		for(int i = 0; i < heapSize; i++) {
+			System.out.print(heap2.deleteMin() + " ");
+		}
+		
+	}
+
+	public void binaryHeapFindLeavesTest() {
 		BinaryHeap<Integer> bh = new BinaryHeap<>();
 //		Integer leaves[] = null; //Comparable --X--> Integer
 		Comparable<Integer> leaves[] = null;
