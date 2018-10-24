@@ -5,6 +5,11 @@ public class Test {
 
 	Random r = new Random();
 	
+	int maxErrorCount = 0;
+	int minErrorCount = 0;
+	int loopTimes = 500;
+	int randomRange = 100;
+	
 	public static void main(String args[]) {
 		Test test = new Test();
 		test.launch();
@@ -16,9 +21,181 @@ public class Test {
 //		binomialQueueTest();
 //		priorityQueueTest();
 //		binaryHeapFindLeavesTest();
-		binaryHeapChainTest();
+//		binaryHeapChainTest();
+//		min_maxHeapTest();
+		/*
+		for(int i = 0; i < 100; i++) {
+			mutipleBuildHeapTest();
+			if(maxErrorCount > 0 || minErrorCount > 0) {
+				System.out.println("ERROR");
+				break;
+			}
+		}
+		*/
+		for(int i = 0; i < 100; i++) {
+			mergeOfMinMaxHeapTest();
+			if(maxErrorCount > 0 || minErrorCount > 0) {
+				System.out.println("ERROR");
+				break;
+			}
+		}
+		
 	}
 	
+	public void minMaxHeapPrint(MinMaxHeap<Integer> heap) {
+		Integer max[] = new Integer[heap.size()/2+1];
+		Integer min[] = new Integer[heap.size()/2+1];
+		int maxIndex = 0;
+		int minIndex = 0;
+		maxErrorCount = 0;
+		minErrorCount = 0;
+		
+		int size = heap.size();
+		for(int k = 0; k < size; k++) {
+			if(k % 2 == 0) {
+				max[maxIndex++] = heap.deleteMax();
+				if(maxIndex > 2 && max[maxIndex-2] < max[maxIndex-1]) {
+					maxErrorCount++;
+					System.out.println("MAAAAAX ERROR");
+				}
+			} else {
+				min[minIndex++] = heap.deleteMin();
+				if(minIndex > 2 && min[minIndex-2] > min[minIndex-1]) {
+					minErrorCount++;
+					System.out.println("MIN ERROR");
+				}
+			}
+		}
+			
+		System.out.print("Max sort: ");
+		for(int i = 0; i < max.length; i++) {
+			System.out.print(max[i] + " ");
+		}
+		System.out.println();
+		
+		System.out.print("Min sort: ");
+		for(Integer m : min) {
+			System.out.print(m + " ");
+		}
+		System.out.println();
+		System.out.println( " Max error times: " + maxErrorCount);
+		System.out.println( " Min error times: " + minErrorCount);
+//		System.out.println(heap2.isEmpty());
+	}
+	
+	public void mergeOfMinMaxHeapTest() {
+		MinMaxHeap<Integer> heap1 = new MinMaxHeap<>();
+		MinMaxHeap<Integer> heap2 = new MinMaxHeap<>();
+		
+		for(int i = 0; i < loopTimes; i++) {
+			heap1.insert(1 + r.nextInt(randomRange));
+			heap2.insert(r.nextInt(20) + r.nextInt(randomRange));
+		}
+		
+		heap1.merge(heap2);
+		
+		minMaxHeapPrint(heap1);
+	}
+	
+
+	public void mutipleBuildHeapTest() {
+		MinMaxHeap<Integer> heap = new MinMaxHeap<>();
+		
+		for(int i = 0; i < loopTimes; i++) {
+			heap.insert(1 + r.nextInt(randomRange));
+		}
+		
+		minMaxHeapPrint(heap);
+	}
+	
+	public void min_maxHeapTest() {
+		MinMaxHeap<Integer> heap = new MinMaxHeap<>();
+		
+		heap.insert(1);
+		heap.insert(2);
+		heap.insert(3);
+		heap.insert(4);
+		heap.insert(5);
+		
+		for(int i = 0; i <= 10; i++) {
+			heap.insert(2 + r.nextInt(20));
+		}
+		
+		/*
+		 * findMin & Max Test
+		 */
+		System.out.println("min = " + heap.findMin());
+		System.out.println("max = " + heap.findMax());
+		
+		/*
+		 * deleteMin Test
+		 */
+		System.out.print("deleteMin = ");
+		int size = heap.size();
+		for(int i = 0; i < size - 1; i++) {
+			System.out.print(heap.deleteMin() + " ");
+		}
+		System.out.println();
+		System.out.println("findMax = " + heap.findMax());
+		System.out.println("heap.size == " + heap.size());
+		heap.clear();
+		
+		/*
+		 * deleteMax Test
+		 */
+		for(int i = 0; i < 10; i++) {
+			heap.insert(r.nextInt(20));
+		}
+		
+		System.out.print("deleteMax = ");
+		size = heap.size();
+		for(int i = 0; i < size - 1; i++) {
+			System.out.print(heap.deleteMax() + " ");
+		}
+		
+		System.out.println();
+		System.out.println("findMax = " + heap.findMax() + " == " + heap.findMin() + " = findMin");
+		System.out.println("heap.size == " + heap.size());
+		heap.clear();
+		
+		/*
+		 * deleteMax&Min at the same time
+		 */
+		for(int i = 0; i < 129; i++) {
+			heap.insert(1 + r.nextInt(40));
+		}
+		
+		minMaxHeapPrint(heap);
+		
+		/*
+		 * special case test
+		 * allLeft < allRight;
+		 */
+		/*
+		System.out.println("-------------------------");
+		
+		heap.clear();
+		heap.insert(3);
+		heap.insert(8);
+		heap.insert(20);
+		heap.insert(4);
+		heap.insert(5);
+		heap.insert(10);
+		heap.insert(12);
+		System.out.println(heap.deleteMin());
+		 */
+		
+		/*
+		 * buildHeap Test
+		 */
+		Integer array[] = new Integer[1290];
+		for(int i = 0; i < array.length; i++) {
+			array[i] = new Integer(1+r.nextInt(100));
+		}
+		heap = new MinMaxHeap<>(array);
+		
+		minMaxHeapPrint(heap);
+	}
 	
 	public void binaryHeapChainTest() {
 		BinaryHeapChain<Integer> heap = new BinaryHeapChain<>();
@@ -30,7 +207,6 @@ public class Test {
 		heap.insert(0);
 		heap.insert(2);
 		
-		System.out.print(heap.deleteMin() + " ");
 		System.out.print(heap.deleteMin() + " ");
 		System.out.print(heap.deleteMin() + " ");
 		System.out.print(heap.deleteMin() + " ");
@@ -54,9 +230,9 @@ public class Test {
 		heap.clear();
 		System.out.println();
 		
-/*
- * mergeTest		
- */		
+		/*
+		 * mergeTest		
+		 */		
 		heap.insert(2);
 		heap.insert(1);
 		heap.insert(8);
