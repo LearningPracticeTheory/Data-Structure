@@ -32,6 +32,7 @@ public class Test {
 			}
 		}
 		*/
+		/*
 		for(int i = 0; i < 100; i++) {
 			mergeOfMinMaxHeapTest();
 			if(maxErrorCount > 0 || minErrorCount > 0) {
@@ -39,7 +40,54 @@ public class Test {
 				break;
 			}
 		}
-		
+		*/
+//		leftistHeapInsertTest();
+		leftistHeapBuildHeapTest();
+	}
+	
+	public void leftistHeapBuildHeapTest() {
+		/*
+		Queue<Integer> list = new LinkedList<>();
+		list.add(1);
+		list.add(1); //can repeat
+		list.add(2);
+		System.out.println(list.size());
+		System.out.print(list.poll() + " ");
+		System.out.print(list.poll() + " ");
+		System.out.println(list.poll()); //from head to tail
+		*/
+		Integer array[] = new Integer[1000];
+		for(int i = 0; i < array.length; i++) {
+			if(i % 40 == 0) {
+				System.out.println();
+			}
+			array[i] = new Integer(1 + r.nextInt(100));
+			System.out.print(array[i] + " ");
+		}
+		System.out.println();
+		LeftistHeap<Integer> heap = new LeftistHeap<>(array);
+		heap.insert(0);
+		int size = heap.size();
+		System.out.println("\n-----------------------");
+		System.out.println("heap.size == " + heap.size());
+		System.out.println("-----------------------");
+		for(int i = 0; i < size; i++) {
+			if(i % 40 == 0) {
+				System.out.println();
+			}
+			System.out.print(heap.deleteMin() + " ");
+		}
+	}
+	
+	/*
+	 * use debug to check out
+	 */
+	public void leftistHeapInsertTest() {
+		LeftistHeap<Integer> heap = new LeftistHeap<>();
+		for(int i = 1; i <= 10; i++) {
+//			heap.insert(i);
+			heap.insert(10-i);
+		}
 	}
 	
 	public void minMaxHeapPrint(MinMaxHeap<Integer> heap) {
@@ -360,6 +408,10 @@ public class Test {
 	public void leftistHeapTest() {
 		LeftistHeap<Integer> lh1 = new LeftistHeap<>();
 		LeftistHeap<Integer> lh2 = new LeftistHeap<>();
+		
+		/*
+		 * insert merge Test
+		 */
 		for(int i = 0; i < 10; i++) {
 			lh1.insert(5 + r.nextInt(20));
 		}
@@ -371,6 +423,16 @@ public class Test {
 		lh1.merge(lh2);
 		System.out.println(lh1.deleteMin());
 		System.out.println(lh1.isEmpty() + " " + lh2.isEmpty());
+		
+		/*
+		 * deleteMin Test
+		 */
+		int size = lh1.size();
+		for(int i = 0; i < size-1; i++) {
+			System.out.print(lh1.deleteMin() + " ");
+		}
+		System.out.println("\n" + "heap.size == " + lh1.size());
+		
 		lh1.clear();
 		System.out.println(lh1.isEmpty());
 	}

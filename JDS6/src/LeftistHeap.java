@@ -1,15 +1,33 @@
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 
 public class LeftistHeap<AnyType extends Comparable<AnyType>> {
 
 	private HeapNode<AnyType> root = null;
+	private int size = 0;
+	
+	LeftistHeap() {
+		
+	}
+	
+	LeftistHeap(AnyType x) { //Build single node LeftistHeap
+		root = new HeapNode<>(x);
+		size = 1;
+	}
+	
+	LeftistHeap(AnyType array[]) { //build multiple nodes Heap
+		buildHeap(array);
+	}
 	
 	public void merge(LeftistHeap<AnyType> lh) { //Merge lh into the priority queue
 		if(this == lh) { //lh must be different from this
 			return; 
 		}
 		root = merge(root, lh.root);
+		this.size += lh.size;
 		lh.root = null; //KIA the LeftistHeap which has been merge
+		lh.size = 0;
 	}
 	
 	private HeapNode<AnyType> merge(HeapNode<AnyType> hn1, HeapNode<AnyType> hn2) {
@@ -47,6 +65,7 @@ public class LeftistHeap<AnyType extends Comparable<AnyType>> {
 
 	public void insert(AnyType x) {
 		insert(new HeapNode<AnyType>(x));
+		size++;
 	}
 	
 	private void insert(HeapNode<AnyType> heapNode) {
@@ -56,6 +75,7 @@ public class LeftistHeap<AnyType extends Comparable<AnyType>> {
 	public AnyType deleteMin() {
 		AnyType min = findMin(); //out of bound check
 		root = merge(root.left, root.right);
+		size--;
 		return min;
 	}
 	
@@ -66,8 +86,43 @@ public class LeftistHeap<AnyType extends Comparable<AnyType>> {
 		return root.element;
 	}
 	
+	private void buildHeap(AnyType array[]) {
+		Queue<LeftistHeap<AnyType>> queue = new LinkedList<>();
+		for(int i = 0; i < array.length; i++) {
+			switch(queue.size()) {
+			case 0:
+				queue.add(new LeftistHeap<AnyType>(array[i]));
+				break;
+			case 1:
+				queue.add(new LeftistHeap<AnyType>(array[i]));
+				queueMerge(queue);
+				break;
+//			case 2:
+//				break;
+			}
+		}
+		
+		if(!queue.isEmpty()) {
+			this.root = queue.poll().root;
+		}
+		
+		size = array.length;
+	}
+	
+	private void queueMerge(Queue<LeftistHeap<AnyType>> queue) {
+		LeftistHeap<AnyType> heap1 = queue.poll();
+		LeftistHeap<AnyType> heap2 = queue.poll();
+		heap1.merge(heap2);
+		queue.add(heap1);
+	}
+	
+	public int size() {
+		return size;
+	}
+	
 	public boolean isEmpty() {
-		return root == null;
+//		return root == null;
+		return size == 0;
 	}
 	
 	public void clear() {
