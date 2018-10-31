@@ -1,5 +1,6 @@
 
-public class InsertionSort<AnyType extends Comparable<? super AnyType>> {
+//public class InsertionSort<AnyType extends Comparable<? super AnyType>> {
+public class InsertionSort {
 	
 	public static<AnyType extends Comparable<AnyType>> void sort0(AnyType array[]) {
 		
