@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Test {
 	
-	public static final int RANDOM_AMOUNT = 20;
+	public static final int RANDOM_AMOUNT = 6;
 	public static final int RANDOM_RANGE = 20;
 	public static final int RANDOM_SEED = 1;
 	
@@ -22,24 +22,69 @@ public class Test {
 		System.out.println();
 		
 //		randomTest();
-		insertionSort();
+		
+//		insertionSort();
+		
+		/*
+		System.out.println(lengthOfBinaryNum(0));
+		System.out.println(lengthOfBinaryNum(1));
+		System.out.println(lengthOfBinaryNum(2));
+		System.out.println(lengthOfBinaryNum(5));
+		System.out.println(lengthOfBinaryNum(10));
+		*/
+		
+		shellSort();
 	}
 	
+	public void shellSort() {
+		
+		initArray();
+		ShellSort.sort0(array);
+		printArray("ShellSort");
+		
+		initArray();
+		ShellSort.sort1(array);
+		printArray("ShellSort");
+		
+	}
+	
+	public int lengthOfBinaryNum(int n) {
+		int count = 0;
+		while(true) {
+			if(n == 0 || n == 1) {
+				break;
+			}
+			n /= 2;
+			count++;
+		}
+		return count;
+	}
+	
+	
 	public void randomTest() {
-		Random r0 = new Random();
+		Random r0 = new Random(); //NO seed
 		Random r1 = new Random(1);
-		Random r2 = new Random(1);
-		Random r3 = new Random(2);
+		Random r2 = new Random(1); //same seed, same range
+		Random r3 = new Random(1); //same seed, different range
+		Random r4 = new Random(1); //same seed, different amount
+		Random r5 = new Random(2); //different seed
 		int a0[] = new int[10];
 		int a1[] = new int[10];
 		int a2[] = new int[10];
 		int a3[] = new int[10];
+		int a4[] = new int[20];
+		int a5[] = new int[10];
 		
 		for(int i = 0; i < 10; i++) {
 			a0[i] = r0.nextInt(100);
 			a1[i] = r1.nextInt(100);
 			a2[i] = r2.nextInt(100);
-			a3[i] = r3.nextInt(100);
+			a3[i] = r3.nextInt(50);
+			a5[i] = r5.nextInt(100);
+		}
+		
+		for(int i = 0; i < a4.length; i++) {
+			a4[i] = r4.nextInt(100);
 		}
 		
 		System.out.print("R0: ");
@@ -63,6 +108,18 @@ public class Test {
 		System.out.print("R3: ");
 		for(int i = 0; i < 10; i++) {
 			System.out.print(a3[i] + " ");
+		}
+		System.out.println();
+		
+		System.out.print("R4: ");
+		for(int i = 0; i < 20; i++) {
+			System.out.print(a4[i] + " ");
+		}
+		System.out.println();
+		
+		System.out.print("R5: ");
+		for(int i = 0; i < 10; i++) {
+			System.out.print(a5[i] + " ");
 		}
 		System.out.println();
 	}
