@@ -2,7 +2,8 @@ import java.util.Random;
 
 public class Test {
 	
-	public static final int RANDOM_AMOUNT = 6;
+	private static Random r = new Random();
+	public static final int RANDOM_AMOUNT = 1+r.nextInt(50);
 	public static final int RANDOM_RANGE = 20;
 	public static final int RANDOM_SEED = 1;
 	
@@ -33,7 +34,20 @@ public class Test {
 		System.out.println(lengthOfBinaryNum(10));
 		*/
 		
-		shellSort();
+//		shellSort();
+		
+		heapSort();
+	}
+	
+	public void heapSort() {
+		initArray();
+		HeapSort.sort0(array);
+		printArray("HeapSort");
+		
+		initArray();
+		HeapSort.sort0(array);
+		printArray("HeapSort");
+		
 	}
 	
 	public void shellSort() {
@@ -146,11 +160,18 @@ public class Test {
 	}
 	
 	public void printArray(String title) {
+		int errorCount = 0;
+		Integer previous = array[0];
 		System.out.print(title + ": ");
 		for(int i = 0; i < array.length; i++) {
+			if(array[i] < previous) {
+				errorCount++;
+				System.out.println("ERROR");
+			}
 			System.out.print(array[i] + " ");
+			previous = array[i];
 		}
-		System.out.println();
+		System.out.println("\nError times = " + errorCount);
 	}
 	
 }
