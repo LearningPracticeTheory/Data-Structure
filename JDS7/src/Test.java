@@ -3,7 +3,9 @@ import java.util.Random;
 public class Test {
 	
 	private static Random r = new Random();
-	public static final int RANDOM_AMOUNT = 1+r.nextInt(50);
+	public static final int RANDOM_AMOUNT = r.nextInt(50); //random test
+//	public static final int RANDOM_AMOUNT = 7; //debug test
+//	public static final int RANDOM_AMOUNT = 1; //special test
 	public static final int RANDOM_RANGE = 20;
 	public static final int RANDOM_SEED = 1;
 	
@@ -36,9 +38,17 @@ public class Test {
 		
 //		shellSort();
 		
-		heapSort();
+//		heapSort();
+		
+		mergeSort();
 	}
 	
+	public void mergeSort() {
+		initArray();
+		MergeSort.sort0(array);
+		printArray("MergeSort");
+	}
+
 	public void heapSort() {
 		initArray();
 		HeapSort.sort0(array);
@@ -160,18 +170,26 @@ public class Test {
 	}
 	
 	public void printArray(String title) {
+		if(array.length == 0) {
+			System.out.println("Array is NULL");
+			return;
+		}
 		int errorCount = 0;
 		Integer previous = array[0];
 		System.out.print(title + ": ");
 		for(int i = 0; i < array.length; i++) {
 			if(array[i] < previous) {
 				errorCount++;
-				System.out.println("ERROR");
+				System.err.println("ERROR");
 			}
 			System.out.print(array[i] + " ");
 			previous = array[i];
 		}
-		System.out.println("\nError times = " + errorCount);
+		if(errorCount != 0) {
+			System.err.println("\nError times = " + errorCount);
+		} else {
+			System.out.println("\nCORRECT!");
+		}
 	}
 	
 }
