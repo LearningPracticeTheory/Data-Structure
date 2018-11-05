@@ -44,9 +44,19 @@ public class Test {
 	}
 	
 	public void mergeSort() {
+		
 		initArray();
 		MergeSort.sort0(array);
 		printArray("MergeSort");
+		
+		initArray();
+		MergeSort.sort1(array);
+		printArray("MergeSort");
+		
+		initArray();
+		MergeSort.sort2(array);
+		printArray("MergeSort");
+		
 	}
 
 	public void heapSort() {

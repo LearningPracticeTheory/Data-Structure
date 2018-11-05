@@ -4,7 +4,7 @@ public class MergeSort {
 	/* 
 	 * divide until single node, then merge from deep to shallow,
 	 * which means the length of arrays increases with the merge
-	 * the arrays are sorted when merge
+	 * and the arrays are sorted when merge
 	 */
 	public static<AnyType extends Comparable<AnyType>> void sort0(AnyType array[]) {
 		if(array.length <= 1) {
@@ -102,6 +102,118 @@ public class MergeSort {
 		AnyType array[] = (AnyType[]) new Comparable[1];
 		array[0] = theElement;
 		return merge(array, tmpArray);
+	}
+	
+/*-------------------------------------------------------------------------------------*/
+	
+	@SuppressWarnings("unchecked")
+	public static<AnyType extends Comparable<AnyType>> void sort1(AnyType array[]) {
+		AnyType tmpArray[] = (AnyType[]) new Comparable[array.length];
+		divide(array, tmpArray, 0, array.length); //[start, end);
+	}
+	
+	private static<AnyType extends Comparable<AnyType>> 
+	void divide(AnyType array[], AnyType tmpArray[], int leftStart, int rightEnd) {
+		/*
+		 * binary divide + post-order merge
+		 * @see BinarySearch in algorithm
+		 */
+		if(leftStart < rightEnd-1) {
+			int center = (leftStart + rightEnd) / 2; //== leftStart + (rightEnd - leftStart) / 2;
+			divide(array, tmpArray, leftStart, center);
+			divide(array, tmpArray, center, rightEnd);
+			merge(array, tmpArray, leftStart, center, rightEnd);
+		}
+	}
+
+	private static<AnyType extends Comparable<AnyType>> 
+	void merge(AnyType[] array, AnyType[] tmpArray, int leftStart, int rightStart, int rightEnd) {
+		int leftEnd = rightStart;
+		int index = leftStart;
+		int numOfElements = rightEnd-leftStart;
+
+		while(leftStart < leftEnd && rightStart < rightEnd) {
+			if(array[leftStart].compareTo(array[rightStart]) < 0) {
+				tmpArray[index++] = array[leftStart++];
+			} else {
+				tmpArray[index++] = array[rightStart++];
+			}
+		}
+		
+		while(leftStart < leftEnd) {
+			tmpArray[index++] = array[leftStart++];
+		}
+		
+		while(rightStart < rightEnd) {
+			tmpArray[index++] = array[rightStart++];
+		}
+		
+		for(int i = 0; i < numOfElements; i++) {
+			array[--rightEnd] = tmpArray[rightEnd];
+		}
+		
+	}
+
+/*-------------------------------------------------------------------------------------*/
+	
+	public static<AnyType extends Comparable<AnyType>> void sort2(AnyType array[]) {
+		if(array.length <= 1) {
+			return;
+		}
+		AnyType tmpArray[] = divide2(array);
+		for(int i = 0; i < tmpArray.length; i++) { 
+			array[i] = tmpArray[i];
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static<AnyType extends Comparable<AnyType>>
+	AnyType[] divide2(AnyType array[]) { 
+		int center = array.length/2;
+		AnyType array1[] = (AnyType[]) new Comparable[center];
+		AnyType array2[] = (AnyType[]) new Comparable[array.length-center];
+		
+		for(int i = 0; i < center; i++) {
+			array1[i] = array[i];
+		}
+		int index = 0;
+		for(int i = center; i < array.length; i++) {
+			array2[index++] = array[i];
+		}
+		
+		if(array.length > 2) {
+			array1 = divide2(array1);
+			array2 = divide2(array2);
+		}
+		
+		return merge2(array1, array2);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private static<AnyType extends Comparable<AnyType>>
+	AnyType[] merge2(AnyType array1[], AnyType array2[]) {
+		AnyType array[] = (AnyType[]) new Comparable[array1.length + array2.length];
+		int index1 = 0;
+		int index2 = 0;
+		int index = 0;
+		
+		while(index1 < array1.length && index2 < array2.length) {
+			if(array1[index1].compareTo(array2[index2]) < 0) {
+				array[index++] = array1[index1++];
+			} else {
+				array[index++] = array2[index2++];
+			}
+		}
+		
+		while(index1 < array1.length) {
+			array[index++] = array1[index1++];
+		}
+		
+		while(index2 < array2.length) {
+			array[index++] = array2[index2++];
+		}
+		
+		return array;
 	}
 	
 }
