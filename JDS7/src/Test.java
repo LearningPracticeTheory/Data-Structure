@@ -1,15 +1,18 @@
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class Test {
-	
+
 	private static Random r = new Random();
 	public static final int RANDOM_AMOUNT = r.nextInt(50); //random test
 //	public static final int RANDOM_AMOUNT = 7; //debug test
 //	public static final int RANDOM_AMOUNT = 1; //special test
+//	public static final int RANDOM_AMOUNT = 15; //normal test
 	public static final int RANDOM_RANGE = 20;
 	public static final int RANDOM_SEED = 1;
 	
-	final Integer array[] = new Integer[RANDOM_AMOUNT];
+	public final static Integer array[] = new Integer[RANDOM_AMOUNT];
 	
 	public static void main(String args[]) {
 		new Test().launch();
@@ -40,7 +43,66 @@ public class Test {
 		
 //		heapSort();
 		
-		mergeSort();
+//		mergeSort();
+		
+//		badQuickSort();
+		
+		quickSort();
+	}
+	
+	/*
+	 * just show how it work
+	 */
+	public static<AnyType extends Comparable<AnyType>>
+	void badQuickSort() {
+		List<Integer> list = new LinkedList<>();
+		for(int i = 0; i < array.length; i++) {
+			list.add(array[i]);
+		}
+		list = badQuickSort(list);
+		
+		for(int i = 0; i < list.size(); i++) {
+			array[i] = list.get(i);
+		}
+		
+		printArray("bad quick sort");
+	}
+	
+	public static<AnyType extends Comparable<AnyType>>
+	List<AnyType> badQuickSort(List<AnyType> items) {
+		if(items.size() > 1) {
+			List<AnyType> smaller = new LinkedList<>();
+			List<AnyType> same = new LinkedList<>();
+			List<AnyType> greater = new LinkedList<>();
+			AnyType center = items.get(items.size()/2); 
+			
+			for(AnyType t : items) {
+				if(t.compareTo(center) < 0) {
+					smaller.add(t);
+				} else if(t.compareTo(center) > 0) {
+					greater.add(t);
+				} else {
+					same.add(t);
+				}
+			}
+			
+			badQuickSort(smaller);
+			badQuickSort(greater);
+			
+			items.clear();
+			items.addAll(smaller);
+			items.addAll(same);
+			items.addAll(greater);
+			
+			return items;
+		}
+		return null;
+	}
+	
+	public void quickSort() {
+		initArray();
+		QuickSort.sort(array);
+		printArray("QuickSort");
 	}
 	
 	public void mergeSort() {
@@ -179,7 +241,7 @@ public class Test {
 		}
 	}
 	
-	public void printArray(String title) {
+	public static void printArray(String title) {
 		if(array.length == 0) {
 			System.out.println("Array is NULL");
 			return;
