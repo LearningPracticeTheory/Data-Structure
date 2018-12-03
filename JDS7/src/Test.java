@@ -1,3 +1,13 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -47,7 +57,96 @@ public class Test {
 		
 //		badQuickSort();
 		
-		quickSort();
+//		quickSort();
+		
+		radixSortTest();
+		
+//		createStringFile();
+	}
+	
+	private static final int STRING_NUMS = 20;
+	private static final int STRING_RANGE = 10;
+	
+	public void createStringFile() {
+		File f = new File("text.txt");
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		if(!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for(int i = 0; i < STRING_NUMS; i++) {
+			int length = 1 + r.nextInt(STRING_RANGE);
+			char chars[] = new char[length];
+			for(int k = 0; k < length; k++) {
+				chars[k] = (char)('a' + r.nextInt(26));
+			}
+			String s = new String(chars);
+System.out.print(s + " ");
+			try {
+				bw.write(s);
+				bw.newLine();
+				bw.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("\nfile already created");
+	}
+	
+	public void radixSortTest() {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(
+//				this.getClass().getClassLoader().getResourceAsStream("words.txt"))); //in bin/
+//					new FileInputStream("words.txt"))); //same length strings
+					new FileInputStream("text.txt"))); //random length strings
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		ArrayList<String> list = new ArrayList<>();
+		String s;
+		try {
+			while((s = br.readLine()) != null) {
+				list.add(s);
+			}
+//			String array[] = new String[list.size()/2];
+			String array[] = new String[list.size()];
+			int maxLen = 0;
+			for(int i = 0; i < array.length; i++) {
+				array[i] = list.get(i);
+				if(array[i].length() > maxLen) {
+					maxLen = array[i].length();
+				}
+			}
+			printStrings(array, "Original");
+			
+			//same length test
+//			RadixSort.radixSortSameLength(array, array[0].length());
+//			RadixSort.countingRadixSort(array, array[0].length());
+			
+			//random length test
+			RadixSort.radixSort(array, maxLen);
+			
+			printStrings(array, "Sorted  ");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void printStrings(String array[], String title) {
+		System.out.print(title + ": ");
+		for(int i = 0; i < array.length; i++) {
+			System.out.print(array[i] + " ");
+		}
+		System.out.println();
 	}
 	
 	/*
