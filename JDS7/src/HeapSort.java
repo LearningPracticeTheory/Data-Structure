@@ -84,22 +84,45 @@ public class HeapSort<AnyType extends Comparable<AnyType>> {
 	 * percolate optimization
 	 * start always from 0, similar to BinaryHeap.percolateDown(hole);
 	 */
+	/*
 	private static<AnyType extends Comparable<AnyType>>
 	void percDown(AnyType array[], int start, int end) {
-		int child;
-		AnyType tmp = array[start];
-		for(child = leftChild(start); child < end; start = child) {
-			if(child != end-1 && 
+		int child = 0;
+		for(; leftChild(start) < end; start = child) {
+			child = leftChild(start);
+			if(child + 1 < end && 
 					array[child].compareTo(array[child+1]) < 0) { //left < right
 				child++;
 			}
 			if(array[start].compareTo(array[child]) < 0) {
-				array[start] = array[child];
+				swap(array, start, child);
 			} else {
 				break;
 			}
 		}
-		array[child] = tmp;
+	}
+	*/
+	
+	/*
+	 * one-way assignment 
+	 */
+	private static<AnyType extends Comparable<AnyType>>
+	void percDown(AnyType array[], int start, int end) {
+		int child = 0;
+		AnyType tmp = array[start];
+		for(; leftChild(start) < end; start = child) {
+			child = leftChild(start);
+			if(child + 1 < end && 
+					array[child].compareTo(array[child+1]) < 0) { //left < right
+				child++;
+			}
+			if(array[start].compareTo(array[child]) < 0) {
+				swap(array, start, child);
+			} else {
+				break;
+			}
+		}
+		array[start] = tmp;
 	}
 	
 	private static<AnyType extends Comparable<AnyType>> 
