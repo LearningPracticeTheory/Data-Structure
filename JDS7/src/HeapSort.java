@@ -116,8 +116,8 @@ public class HeapSort<AnyType extends Comparable<AnyType>> {
 					array[child].compareTo(array[child+1]) < 0) { //left < right
 				child++;
 			}
-			if(array[start].compareTo(array[child]) < 0) {
-				swap(array, start, child);
+			if(tmp.compareTo(array[child]) < 0) {
+				array[start] = array[child];
 			} else {
 				break;
 			}
